@@ -13,9 +13,20 @@ def gps_to_cartesian(coord):
     y = R * np.cos(lat) * np.sin(long)
     return x, y
 
-# TODO: turn this into a sum of the gaussians
-def risk_field(coord):
-    return 0
-
 def gaussian(mean, cov, input):
     return multivariate_normal(mean, cov).pdf(input)
+
+class Simulation:
+
+    def __init__(self):
+        self.entities = [([0, 0],
+                          [[100, 0],
+                           [0, 100]],
+                          0.9)] #(location, cov, risk_factor)
+
+    def risk_field(self, coord):
+        risk_level = 0
+        coord = gps_to_cartesian(coord)
+        for mean, cov, risk_factor in entities:
+            risk_level += risk_factor * gaussian(mean, cov, coord)
+        return risk_field
