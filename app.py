@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
+import calculations
 
 app = Flask(__name__)
 api = Api(app)
@@ -53,14 +54,14 @@ class UserId(Resource):
 
 
 class LocationData(Resource):
-    def put(self,location_data):
+    def post(self):
         args = location_data_put_args.parse_args()
-        location[location_data] = args
-        return location[location_data]
+        risk_level = calculations.risk_field((args["latitude"], args["longitude"]))
+        return {"risk_level": risk_level}
 
 
 api.add_resource(UserId, "/userid/<string:user_id>")
-api.add_resource(LocationData, "/locationdata/<string:location_data>")
+api.add_resource(LocationData, "/locationdata")
 
 
 
