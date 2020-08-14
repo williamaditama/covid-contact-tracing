@@ -6,7 +6,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
-  userSetup().then(() => setIsLoading(false));
+  userSetup()
+    .then(() => setIsLoading(false))
+    .catch(() => setIsLoading(false)); // TODO Error message
 
   if (isLoading)
     return <ActivityIndicator />
