@@ -32,8 +32,8 @@ New user creation
 ```
 new_user(userid)
 
-### Ping a Location & Get Risk Level
-* POST /ping
+### Get Risk Level
+* POST /risk_level
 * Body
  ```
  {
@@ -55,10 +55,10 @@ ping(userid, lat, long) -> double
 * Body
 ```
 {
-    lat (double),
-    long (double),
-    fn_type (string),
-    st_dev (double)
+    userID,
+    lat,
+    lng,
+    timestamp
 }
 ```
 ping(lat, long, fn_type, st_dev)
