@@ -15,7 +15,6 @@ class NewUser(Resource):
         add_user(json_request['userID'])
         return {'message': 'Success'}, 200
 
-
 class GetRiskLevel(Resource):
     def post(self):
         json_request = request.get_json()
@@ -26,13 +25,11 @@ class GetRiskLevel(Resource):
 
         return {'risk': risk}, 200
 
-
 class AddLocationData(Resource):
     def post(self):
         json_request = request.get_json()
         add_loc(json_request['userID'], json_request['lat'], json_request['lng'], json_request['timestamp'])
         return {'message': 'Success'}, 200
-
 
 
 api.add_resource(NewUser, "/new_user")
