@@ -9,7 +9,7 @@
 
 ### locations
 
-| id  |      lat |   long | fn_type| risklevel  | st_dev |
+| id  |      lat |   long | fn_type| risklevel  |   cov  |
 |:---:|:--------:|:------:|:------:|:----------:|:------:|
 |  0  |     1    |    1   |    0   |   0        |
 |  1  |     0    |    1   |    0   |
@@ -24,10 +24,16 @@ New user creation
     userID (string)
 }
 ```
+* Return
+```
+{
+  riskLevel (double[0, 1])
+}
+```
 new_user(userid)
 
-### Ping a Location & Get Risk Level
-* POST /ping
+### Get Risk Level
+* POST /risk_level
 * Body
  ```
  {
@@ -49,27 +55,25 @@ ping(userid, lat, long) -> double
 * Body
 ```
 {
-    lat (double),
-    long (double),
-    fn_type (string),
-    st_dev (double)
+    userID,
+    lat,
+    lng,
+    timestamp
 }
 ```
 ping(lat, long, fn_type, st_dev)
 
 ---
 ## Discrete Updates Equation
-if y < x:
 
-$$ y_{t+1} := x \times w(x, ys) + y_{t}(1 - w(x, ys)) $$  
+the universe is a bunch of gaussians walking around, fucking each others brains out
 
-if x > y:
+person = risk\*really thin Gaussian
+place = risk\*fat gaussian
 
-$$ x_{t+1} := y \times h(x, y)  + x(1-h(x, y))$$
+$$ $$
 
 w(x, ys)
-
-*
 
 ## Multivariate Gaussian Equation
 
