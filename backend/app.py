@@ -8,22 +8,6 @@ from db_interface import connect, add_user, add_loc
 app = Flask(__name__)
 api = Api(app)
 
-#user id arguments
-userid_put_args = reqparse.RequestParser()
-userid_put_args.add_argument("userID", type=str, help="User Unique ID")
-
-user = {}
-
-#location arguments
-
-location_data_put_args = reqparse.RequestParser()
-location_data_put_args.add_argument("latitude", type=float, help="Hotspot location latitude")
-location_data_put_args.add_argument("longitude", type=float, help="Hotspot location longitude")
-
-location = {}
-
-
-
 # userID class with get an put function
 class NewUser(Resource):
     def post(self):
