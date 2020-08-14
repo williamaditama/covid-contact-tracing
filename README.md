@@ -24,6 +24,12 @@ New user creation
     userID (string)
 }
 ```
+* Return
+```
+{
+  riskLevel (double[0, 1])
+}
+```
 new_user(userid)
 
 ### Ping a Location & Get Risk Level

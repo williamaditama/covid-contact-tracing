@@ -5,7 +5,7 @@ app = Flask(__name__)
 api = Api(app)
 
 userid_put_args = reqparse.RequestParser()
-userid_put_args.add_argument("userID", type=str, help="User Uniqe ID")
+userid_put_args.add_argument("userID", type=str, help="User Unique ID")
 
 user = {}
 
@@ -24,12 +24,12 @@ def abort_if_userid_duplicate(user_id):
 # userID class with get an put function
 class UserId(Resource):
     def get(self, user_id):
-        abort_if_userid_duplicate(user_id)
         abort_if_userid_null(user_id)
         return user[user_id]
 
     def put(self, user_id):
         args = userid_put_args.parse_args()
+        abort_if_userid_duplicate(user_id)
         user[user_id] = args
         return user[user_id], 201
 
