@@ -73,7 +73,10 @@ w(x, ys)
 
 ## Multivariate Gaussian Equation
 
+![Multivar Gaussian](./latex_images/multvar_gaussian.png)
+<!-- The latex is:
 $$ f_{Z}(z) = \frac{1}{\sqrt{|det(\Sigma)|}} \frac{1}{(\sqrt{2\pi})^k} e^{-\frac{1}{2} (Z - \mu)^T\Sigma^{-1} (Z - \mu) } $$
+-->
 
 ## app dependencies
 - william fill this in!!
