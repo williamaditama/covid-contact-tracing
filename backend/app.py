@@ -1,6 +1,9 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
-import calculations
+
+from calculations import Simulation
+import json
+from db_interface import connect, add_user, add_loc
 
 app = Flask(__name__)
 api = Api(app)
@@ -19,49 +22,38 @@ location_data_put_args.add_argument("longitude", type=float, help="Hotspot locat
 
 location = {}
 
-locationrisk_put_args = reqparse.RequestParser()
-locationrisk_put_args.add_argument("Inherent Risk", type=float, help="Inherent Risk value for Hotspot Location")
-
-locationrisk = "Inherent Risk"
-
-
-# error handling
-def abort_if_userid_null(user_id):
-    if user_id not in user:
-        abort(404, message="UserId invalid")
-
-
-def abort_if_userid_duplicate(user_id):
-    if user_id in user:
-        abort(409, message="userID already exist")
-
 
 
 # userID class with get an put function
-class UserId(Resource):
-    def get(self, user_id):
-        abort_if_userid_null(user_id)
-        return user[user_id], 200
-
-    def put(self, user_id):
-        abort_if_userid_duplicate(user_id)
-        args = userid_put_args.parse_args()
-        user[user_id] = args
-        return user[user_id], 201
-
-    def get(self, user_risk):
-        return
-
-
-class LocationData(Resource):
+class NewUser(Resource):
     def post(self):
-        args = location_data_put_args.parse_args()
-        risk_level = calculations.risk_field((args["latitude"], args["longitude"]))
-        return {"risk_level": risk_level}
+        json_request = request.get_json()
+        add_user(json_request['userID'])
+        return {'message': 'Success'}, 200
 
 
-api.add_resource(UserId, "/userid/<string:user_id>")
-api.add_resource(LocationData, "/locationdata")
+class GetRiskLevel(Resource):
+    def post(self):
+        json_request = request.get_json()
+        lat, lng = json_request['lat'], json_request['lng']
+
+        sim = Simulation()
+        risk = sim.risk_field((lat, lng))
+
+        return {'risk': risk}, 200
+
+
+class AddLocationData(Resource):
+    def post(self):
+        json_request = request.get_json()
+        add_loc(json_request['userID'], json_request['lat'], json_request['lng'], json_request['timestamp'])
+        return {'message': 'Success'}, 200
+
+
+
+api.add_resource(NewUser, "/new_user")
+api.add_resource(AddLocationData, "/new_location")
+api.add_resource(GetRiskLevel, "/risk_level")
 
 
 
