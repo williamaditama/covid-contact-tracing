@@ -1,5 +1,7 @@
 # Crowder: COVID Risk Visualization
-Have you ever needed to go somewhere, except you're not sure how safe it is, during these dark times of Covid? We present **Crowder**, an app which visualizes how risky particular locations are, in terms of catching Covid. The app relies on crowd contribution, so the more users using the app the more accurate it is.
+Have you ever needed to go somewhere, except you're not sure how safe it is, during these dark times of Covid? Well we have...
+
+We present **Crowder**, an app which visualizes how risky particular locations are, in terms of catching Covid. The app relies on crowd contribution, so the more users using the app the more accurate it is.
 
 ## Risk scalar field
 > "Aren't we all just Gaussian curves, walking around, f**king each other's brains out?"
@@ -15,7 +17,7 @@ However, we understand that covid can linger on surfaces which can cause retroac
 
 The equations we used are presented below for interested parties.
 
-## Some Equations
+### Some Equations
 
 <!-- ![Multivar Gaussian](./latex_images/multvar_gaussian.png) -->
 
@@ -39,6 +41,8 @@ Where:
 - ![$p$](https://latex.codecogs.com/gif.latex?\inline&space;p) is a constant-valued persistence factor, i.e. how long of a trail we want. Higher ![$p$](https://latex.codecogs.com/gif.latex?\inline&space;p) implies a longer trail.
 - ![$ct$](https://latex.codecogs.com/gif.latex?\inline&space;ct) is the current time.
 
+##Backend Server
+
 ### user table
 keeps track of the list of users in the system
 | uuid|
@@ -55,8 +59,8 @@ Users can move around, so their lat, long can change. The timestamp is used to c
 |  0      |20.0934    |30.2823 |    0       |
 |  1      |-40.2383   |15.3453 |    0       |
 
-## REST API
-### New User
+### REST API
+#### New User
 New user creation
 * POST /new_user
 * Body
@@ -72,7 +76,7 @@ New user creation
 }
 ```
 
-### Get Risk Level
+#### Get Risk Level
 * POST /risk_level
 * Body
  ```
@@ -89,7 +93,7 @@ New user creation
 }
 ```
 
-### Insert a new location ping into the server
+#### Insert a new location ping into the server
 * POST /new_location
 * Body
 ```
@@ -100,3 +104,33 @@ New user creation
     timestamp
 }
 ```
+
+## Frontend App
+<!-- TODO: fill this in, explain the user interface -->
+
+## Challenges
+* Heroku does not support sqlite3 so we had to switch over to postgresql which we have never used before
+* We did not get the expected behavior from our formula
+* Trying not to overwork - and failing miserably
+
+## Accomplishments
+*  We deployed a functioning backend with a REST API
+*  Creating a risk evaluation algorithm from scratch - and simplified it to make it feasible for tracking
+
+## What we learnt
+* We learnt the Heroku framework for deploying a backend application
+* We learnt about Teletype for working on code together, which made things faster and simpler
+* We learnt about Flask-Restful and how to create a RESTful API using Python
+
+## What's next for CROWDER
+* Reminders based on user activity and risk levels surrounding them (behavior analysis)
+* Turn it into a social game to actually motivate users
+* Collect anonymized user data in order to aid in actual Contact Tracing efforts
+
+<!--
+TODO: fill in these sections for front end
+## How we built it
+## Challenges
+## Accomplishments that I'm proud of
+## What we learned
+## What's next for CROWDER -->
