@@ -2,6 +2,7 @@ import numpy as np
 from scipy.stats import multivariate_normal
 import db_interface
 import time
+import math
 
 #https://en.wikipedia.org/wiki/Earth_radius#Published_values
 R = 6371.230
@@ -19,7 +20,9 @@ def gps_to_cartesian(coord):
     return x*100, y*100 #x and y are in hectometer(100) originally
 
 def gaussian(mean, cov, input):
-    return multivariate_normal(mean, cov).pdf(input)
+    # scale by 2 * math.pi to get a max value of 1 at the mean
+    # however this is no longer a valid probability distribution
+    return 2 * math.pi * multivariate_normal(mean, cov).pdf(input)
 
 class Simulation:
     """
