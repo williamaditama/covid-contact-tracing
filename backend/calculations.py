@@ -10,7 +10,7 @@ R = 6371.230
 #https://www.dhs.gov/science-and-technology/sars-calculator
 temp = 28 #temperature in celsius (average)
 humid = 80 # percent humidity (average)
-halflife = 32.43-(0.62 * temp)-(0.15 * humid)
+halflife = 3600 * (32.43-(0.62 * temp)-(0.15 * humid))
 
 default_cov = [[1, 0],
                [0, 1]]
@@ -43,7 +43,7 @@ class Simulation:
     The higher the persistence, the lesser the decay
     """
 
-    def __init__(self, persistence=0.1):
+    def __init__(self, persistence=-math.log(2)/halflife):
         self.persistence = persistence
 
     def get_entities(self):
@@ -56,6 +56,7 @@ class Simulation:
         coord = gps_to_cartesian(coord)
         curr_time = time.time()
         for mean, cov, start_time in self.get_entities():
-            decay_term = self.persistence/(curr_time - start_time + 1e-8)
-            risk_level += decay_term * gaussian(mean, cov, coord)
+            if curr_time - start_time <= 4 * halflife:
+                decay_term = math.exp(persistence * (curr_time - start_time))
+                risk_level += decay_term * gaussian(mean, cov, coord)
         return risk_level
