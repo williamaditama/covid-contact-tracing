@@ -41,8 +41,7 @@ class Simulation:
     def get_entities(self):
         rows = db_interface.get_loc()
         #assume covariance = [[1, 1], [1, 1]]
-        return [(gps_to_cartesian((lat, long)), default_cov, time) for _, lat, long, time in rows]
-
+        return [(gps_to_cartesian((float(lat), float(long))), default_cov, time) for _, lat, long, time in rows]
 
     def risk_field(self, coord):
         risk_level = 0.0
