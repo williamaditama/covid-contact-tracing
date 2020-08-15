@@ -49,7 +49,7 @@ export default function MainScreen(props) {
     // }
 
     postLocation(latitude, longitude)
-    .then(d => console.log(d));
+        .then(d => console.log(d));
 
     return <View style={styles.container}>
         <MapView style={styles.map}
