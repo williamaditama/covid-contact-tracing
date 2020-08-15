@@ -9,7 +9,7 @@ import { getRiskLevel, postLocation } from '../services/httpRequests'
 let globalLoc = null;
 
 const INTERVAL_RISK = 1000;
-const INTERVAL_LOC = 60000;
+const INTERVAL_LOC = 5 * 60000;
 
 export default function MainScreen(props) {
     const [location, setLocation] = React.useState(null);
@@ -107,7 +107,7 @@ export default function MainScreen(props) {
 }
 
 function generateColor(riskValue) {
-    const MAX = 200
+    const MAX = 120
     const FROM = [7, parseInt('0xda'), parseInt('0x63')]
     const TO = [parseInt('0xe6'), parseInt('0x20'), parseInt('0x20')]
     let ret = []
