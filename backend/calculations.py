@@ -16,7 +16,7 @@ def gps_to_cartesian(coord):
     long = np.deg2rad(long)
     x = R * np.cos(lat) * np.cos(long)
     y = R * np.cos(lat) * np.sin(long)
-    return x, y
+    return x*100, y*100 #x and y are in hectometer(100) originally
 
 def gaussian(mean, cov, input):
     return multivariate_normal(mean, cov).pdf(input)
