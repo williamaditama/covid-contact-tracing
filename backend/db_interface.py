@@ -1,19 +1,20 @@
-import sqlite3
 import os
+import psycopg2
 
+DATABASE_URL = os.environ['DATABASE_URL']
 
 def connect():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    return sqlite3.connect(os.path.join(dir_path, 'database.db'))
+    return psycopg2.connect(DATABASE_URL, sslmode='require')
 
 def add_user(uuid):
     connection = connect()
-    connection.execute(f'INSERT INTO users VALUES (?)', (uuid))
+    connection.cursor().execute('INSERT INTO users VALUES (%s)', (uuid,))
+    connection.commit()
 
 def add_loc(userID, lat, lng, timestamp):
     connection = connect()
-    query = "INSERT INTO locations VALUES (?, ?, ?, ?)"
-    connection.execute(query, (userID, lat, lng, timestamp))
+    query = "INSERT INTO locations VALUES (%s, %s, %s, %s)"
+    connection.cursor().execute(query, (userID, lat, lng, timestamp))
     connection.commit()
 
 def get_loc():
