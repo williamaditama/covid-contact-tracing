@@ -1,6 +1,8 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
 
+import time
+
 from calculations import Simulation
 import json
 from db_interface import connect, add_user, add_loc
@@ -28,7 +30,7 @@ class GetRiskLevel(Resource):
 class AddLocationData(Resource):
     def post(self):
         json_request = request.get_json()
-        add_loc(json_request['userID'], json_request['lat'], json_request['lng'], json_request['timestamp'])
+        add_loc(json_request['userID'], json_request['lat'], json_request['lng'], time.time())
         return {'message': 'Success'}, 200
 
 
