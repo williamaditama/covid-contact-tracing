@@ -57,6 +57,6 @@ class Simulation:
         curr_time = time.time()
         for mean, cov, start_time in self.get_entities():
             if curr_time - start_time <= 4 * halflife:
-                decay_term = math.exp(persistence * (curr_time - start_time))
+                decay_term = math.exp(self.persistence * (curr_time - start_time))
                 risk_level += decay_term * gaussian(mean, cov, coord)
         return risk_level
