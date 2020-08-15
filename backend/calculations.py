@@ -7,6 +7,11 @@ import math
 #https://en.wikipedia.org/wiki/Earth_radius#Published_values
 R = 6371.230
 
+#https://www.dhs.gov/science-and-technology/sars-calculator
+temp = 28 #temperature in celsius (average)
+humid = 80 # percent humidity (average)
+halflife = 32.43-(0.62 * temp)-(0.15 * humid)
+
 default_cov = [[1, 0],
                [0, 1]]
 
@@ -38,7 +43,7 @@ class Simulation:
     The higher the persistence, the lesser the decay
     """
 
-    def __init__(self, persistence=100.0):
+    def __init__(self, persistence=0.1):
         self.persistence = persistence
 
     def get_entities(self):
