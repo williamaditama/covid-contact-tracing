@@ -27,7 +27,7 @@ class GetRiskLevel(Resource):
 
         return {'risk': risk}, 200
 
-class AddLocationData(Resource):
+class AddLocationData(Resource):    
     def post(self):
         json_request = request.get_json()
         add_loc(json_request['userID'], json_request['lat'], json_request['lng'], time.time())

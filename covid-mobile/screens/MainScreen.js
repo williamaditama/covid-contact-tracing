@@ -48,7 +48,8 @@ export default function MainScreen(props) {
         .then(r => setRiskLevel(r))
     // }
 
-    postLocation(latitude, longitude).then(d => console.log(d));
+    postLocation(latitude, longitude)
+    .then(d => console.log(d));
 
     return <View style={styles.container}>
         <MapView style={styles.map}
@@ -79,4 +80,4 @@ const styles = StyleSheet.create({
     container: {
         margin: 24
     }
-});
+})
