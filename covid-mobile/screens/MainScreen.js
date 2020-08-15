@@ -6,12 +6,31 @@ import * as Location from 'expo-location'
 
 import { getRiskLevel, postLocation } from '../services/httpRequests'
 
+let globalLoc = null;
+
+const INTERVAL = 60000;
 
 export default function MainScreen(props) {
     const [location, setLocation] = React.useState(null);
     const [errorMsg, setErrorMsg] = React.useState(null);
     const [riskLevel, setRiskLevel] = React.useState(null);
+    const [isIntervalSet, setIsIntervalSet] = React.useState(false);
 
+    if (!isIntervalSet) {
+        setInterval(() => {
+            console.log('INTERVAL')
+            console.log(globalLoc)
+            if (!globalLoc) return;
+            let { latitude, longitude } = globalLoc.coords;
+            getRiskLevel(latitude, longitude)
+                .then(data => data.risk)
+                .then(r => setRiskLevel(r))
+
+            postLocation(latitude, longitude)
+                .then(d => console.log(d));
+        }, INTERVAL)
+        setIsIntervalSet(true);
+    }
 
 
     React.useEffect(() => {
@@ -41,15 +60,19 @@ export default function MainScreen(props) {
         </View>
     }
 
-    let { latitude, longitude } = location.coords;
     // if (riskLevel === null) {
-    getRiskLevel(latitude, longitude)
-        .then(data => data.risk)
-        .then(r => setRiskLevel(r))
+    //     let { latitude, longitude } = location.coords;
+    //     getRiskLevel(latitude, longitude)
+    //         .then(data => data.risk)
+    //         .then(r => setRiskLevel(r))
+
+    //     postLocation(latitude, longitude)
+    //         .then(d => console.log(d));
     // }
 
-    postLocation(latitude, longitude)
-    .then(d => console.log(d));
+    // console.log('LOC', location)
+    globalLoc = location;
+    // console.log('GLOBAL', globalLoc)
 
     return <View style={styles.container}>
         <MapView style={styles.map}
