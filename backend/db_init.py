@@ -1,7 +1,9 @@
 import sqlite3
+import os
 
 try:
-    sqliteConnection = sqlite3.connect('database.db')
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    sqliteConnection = sqlite3.connect(os.path.join(dir_path, 'database.db'))
     cursor = sqliteConnection.cursor()
     print("Database created and Successfully Connected to SQLite")
 
