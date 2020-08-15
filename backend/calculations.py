@@ -38,7 +38,7 @@ class Simulation:
     The higher the persistence, the lesser the decay
     """
 
-    def __init__(self, persistence=100.0):
+    def __init__(self, persistence=0.1):
         self.persistence = persistence
 
     def get_entities(self):
