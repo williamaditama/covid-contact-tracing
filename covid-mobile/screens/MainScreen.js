@@ -20,12 +20,14 @@ export default function MainScreen(props) {
 
     if (!isIntervalSetRisk) {
         setInterval(() => {
-            console.log('INTERVAL RISK')
             if (!globalLoc) return;
             let { latitude, longitude } = globalLoc.coords;
             getRiskLevel(latitude, longitude)
                 .then(data => data.risk)
-                .then(r => setRiskLevel(r))
+                .then(r => {
+                    console.log("GETTING RISK", r)
+                    setRiskLevel(r)
+                })
         }, INTERVAL_RISK)
         setIsIntervalSetRisk(true);
     }
@@ -68,6 +70,7 @@ export default function MainScreen(props) {
             <ActivityIndicator />
         </View>
     }
+    console.log(loc)
 
     if (riskLevel === null) {
         let { latitude, longitude } = location.coords;
@@ -81,7 +84,6 @@ export default function MainScreen(props) {
 
     // console.log('LOC', location)
     globalLoc = location;
-    // console.log('GLOBAL', globalLoc)
 
     return <View style={styles.container}>
         <MapView style={styles.map}
@@ -97,11 +99,34 @@ export default function MainScreen(props) {
                 image={require('../assets/my-location.png')}
             />
         </MapView>
-        <Text>Risk Level:</Text>
-        <Text>{riskLevel}</Text>
+        <View style={styles.scoreCard}>
+            <Text style={styles.label}>RISK LEVEL</Text>
+            <Text style={{ ...styles.value, color: generateColor(riskLevel) }}>{riskLevel ? riskLevel.toFixed(2) : ''}</Text>
+        </View>
     </View>
 }
 
+function generateColor(riskValue) {
+    const MAX = 200
+    const FROM = [7, parseInt('0xda'), parseInt('0x63')]
+    const TO = [parseInt('0xe6'), parseInt('0x20'), parseInt('0x20')]
+    let ret = []
+    if (riskValue < MAX && riskValue >= 0) {
+        let proportion = riskValue / MAX
+
+        for (let i = 0; i < 3; i++) {
+            let dif = TO[i] - FROM[i]
+            ret.push(FROM[i] + proportion * dif)
+        }
+    } else {
+        return '#000000'
+    }
+    let rv = ret.map(v => {
+        return Math.round(v).toString(16)
+    }).join('')
+    rv = '#' + rv;
+    return rv;
+}
 
 
 const styles = StyleSheet.create({
@@ -111,5 +136,18 @@ const styles = StyleSheet.create({
     },
     container: {
         margin: 24
+    },
+    scoreCard: {
+        margin: 8,
+        padding: 4,
+        elevation: 4,
+        alignItems: 'center'
+    },
+    label: {
+        color: '#777777'
+    },
+    value: {
+        fontSize: 28
     }
 })
+
