@@ -8,28 +8,37 @@ import { getRiskLevel, postLocation } from '../services/httpRequests'
 
 let globalLoc = null;
 
-const INTERVAL = 60000;
+const INTERVAL_RISK = 1000;
+const INTERVAL_LOC = 60000;
 
 export default function MainScreen(props) {
     const [location, setLocation] = React.useState(null);
     const [errorMsg, setErrorMsg] = React.useState(null);
     const [riskLevel, setRiskLevel] = React.useState(null);
-    const [isIntervalSet, setIsIntervalSet] = React.useState(false);
+    const [isIntervalSetLoc, setIsIntervalSetLoc] = React.useState(false);
+    const [isIntervalSetRisk, setIsIntervalSetRisk] = React.useState(false);
 
-    if (!isIntervalSet) {
+    if (!isIntervalSetRisk) {
         setInterval(() => {
-            console.log('INTERVAL')
-            console.log(globalLoc)
+            console.log('INTERVAL RISK')
             if (!globalLoc) return;
             let { latitude, longitude } = globalLoc.coords;
             getRiskLevel(latitude, longitude)
                 .then(data => data.risk)
                 .then(r => setRiskLevel(r))
-
+        }, INTERVAL_RISK)
+        setIsIntervalSetRisk(true);
+    }
+    if (!isIntervalSetLoc) {
+        setInterval(() => {
+            console.log('INTERVAL LOC')
+            console.log(globalLoc)
+            if (!globalLoc) return;
+            let { latitude, longitude } = globalLoc.coords;
             postLocation(latitude, longitude)
                 .then(d => console.log(d));
-        }, INTERVAL)
-        setIsIntervalSet(true);
+        }, INTERVAL_LOC)
+        setIsIntervalSetLoc(true);
     }
 
 
@@ -60,15 +69,15 @@ export default function MainScreen(props) {
         </View>
     }
 
-    // if (riskLevel === null) {
-    //     let { latitude, longitude } = location.coords;
-    //     getRiskLevel(latitude, longitude)
-    //         .then(data => data.risk)
-    //         .then(r => setRiskLevel(r))
+    if (riskLevel === null) {
+        let { latitude, longitude } = location.coords;
+        getRiskLevel(latitude, longitude)
+            .then(data => data.risk)
+            .then(r => setRiskLevel(r))
 
-    //     postLocation(latitude, longitude)
-    //         .then(d => console.log(d));
-    // }
+        postLocation(latitude, longitude)
+            .then(d => console.log(d));
+    }
 
     // console.log('LOC', location)
     globalLoc = location;
